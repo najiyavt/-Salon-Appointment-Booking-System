@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salon Booking App</title>
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1>Book beauty and wellness services</h1>
+      </header>
+      <main>
+        <section id="services">
+            <h2>Our Services</h2>
+        </section>
+
+        <section id="booking">
+            <h2>Book an appoinment with us</h2>
+            <form id="bookingForm">
+                <label for="service" >Select Service: </label>
+                <select id="service" name="service">
+                    <option value="1">Hair & styling</option>
+                    <option value="2">Eyebrows & eyelashes</option>
+                    <option value="3">Massage</option>
+                    <option value="4">Nails</option>
+                    <option value="5">Barbering</option>
+                    <option value="6">Facial & skincare</option>
+                    <option value="7">Manicure</option>
+                    <option value="8">Makeup</option>
+                </select>
+                <label for="dateTime">Select Date and Time:</label>
+                <input type="datetime-local" id="dateTime" name="dateTime" required>
+        
+                <button type="submit">Book Appointment</button>
+            </form>
+        </section>
+        <section>
+            <label for="workingHours">Set Working Hours:</label>
+            <select id="dayOfWeek" name="dayOfWeek">
+                <option value="0">Sunday</option>
+                <option value="1">Monday</option>
+                <option value="3">Thuesday</option>
+                <option value="4">Wednesday</option>
+                <option value="5">Thursday</option>
+                <option value="6">Friday</option>
+                <option value="7">Saturday</option>
+            </select>
+            <input type="time" id="startTime" name="startTime" required>
+            <input type="time" id="endTime" name="endTime" required>
+            <button type="submit" onclick="setWorkingHours()">Set Working Hours</button>
+        </section>
+      </main>
+
+      <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+      <script src="bookings.js"></script>
+</body>
+</html>
