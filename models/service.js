@@ -2,7 +2,12 @@ const Sequelize = require('sequelize');
 const sequelize = require('../util/database');
 
 const Service = sequelize.define('service' , {
-    name: {
+  id: {
+    type: Sequelize.INTEGER,
+    autoIncrement: true,
+    primaryKey: true
+  },  
+  name: {
         type: Sequelize.STRING,
         allowNull: false,
       },
@@ -15,9 +20,10 @@ const Service = sequelize.define('service' , {
         allowNull: false,
       },
     price: {
-        type: Sequelize.DECIMAL(10, 2),
+        type: Sequelize.FLOAT,
         allowNull: false,
     },
+    
 });
 
 module.exports=Service;

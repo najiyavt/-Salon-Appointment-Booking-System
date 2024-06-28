@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 exports.signup = async ( req , res) => {
-    const { username , email  ,password } = req.body;
+    const { username , email  ,password,role } = req.body;
     try{
         const existinEmail = await User.findOne({ where : { email }});
         if(existinEmail){
@@ -11,7 +11,7 @@ exports.signup = async ( req , res) => {
         }
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
-        const newUser = User.create({ username , email ,password:hashedPassword });
+        const newUser = User.create({ username , email ,password:hashedPassword ,role});
         res.status(200).json({ newUser, success: true, message: 'New user created' });
     }catch(error){
         console.log(error);
@@ -27,19 +27,19 @@ exports.login = async ( req , res) => {
             res.status(404).json({ error: 'User not found!!Please signup' });
         }
         const comparePassword= await bcrypt.compare(password,user.password);
-        if(comparePassword){
-            const token = generateToken(user.id, user.username);
-            res.status(200).json({ success: true, message: 'User logged in successfully', token });
-        } else {
-            return res.status(401).json({ success: false, message: 'User not authorized' });
+        if(!comparePassword){          
+            return res.status(401).json({token, role: user.role, success: false, message: 'User not authorized' });
         }
+        //const token = generateToken(user.id, user.username);
+        const token = jwt.sign({ userId: user.id, role: user.role }, process.env.JWT_SECRET);
+        res.status(200).json({ role:user.role , success: true, message: 'User logged in successfully', token });
     }catch(error){
         console.log(error);
         res.status(500).json({ error: 'Server error while logging ' })
     }
 }
 
-function generateToken(id , name){
-    return jwt.sign({userId:id , name:name} , process.env.JWT_SECRET);
-}
+// function generateToken(id , name , role){
+//     return jwt.sign({userId:id , name:name ,role:role} , process.env.JWT_SECRET);
+// }
 

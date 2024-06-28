@@ -6,18 +6,20 @@ exports.getAllServices = async( req, res) => {
         console.log('services',services)
         res.json(services);
     } catch (error) {
-        res.status(500).json({ message: 'Failed to fetch services.' });
+        console.error(error);
+        res.status(500).json({error: error.message, message: 'Failed to fetch services.' });
   }
 }
 
-exports.postNewService = async ( req ,res) => {
+exports.createServices = async ( req ,res) => {
     const  { name , description ,duration , price } = req.body;
     try{
-        const newService = await Service.create({ name ,  description ,duration , price});
+        const newService = await Service.create({ name , description ,duration , price });
         console.log(' new services' , newService);
         res.status(201).json(newService)
     } catch (error) {
-        res.status(500).json({ message: 'Failed to create service.' });
+        console.error(error);
+        res.status(500).json({ error: error.message,message: 'Failed to create service.' });
     }
 }
 
@@ -25,6 +27,8 @@ exports.postNewService = async ( req ,res) => {
 //     try {
          
 //     } catch (error) {
+ //   console.error(error);
+
 //         res.status(500).json({ message: 'Failed to book appointment.' });
 //     }
 // }

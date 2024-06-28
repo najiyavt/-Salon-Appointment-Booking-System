@@ -15,13 +15,25 @@ app.use(express.static(path.join(__dirname, 'public')));
 const sequelize = require('./util/database');
 const userRoutes = require('./routes/user');
 const serviceRoutes = require('./routes/service')
-const appoinmentRoutes = require('./routes/appoinment')
+const appointmentRoutes = require('./routes/appointments')
 
 const User = require('./models/user');
+const Service = require('./models/service');
+const Appointment = require('./models/appointments');
 
-app.use('/user', userRoutes);
-app.use('/service' , serviceRoutes);
-app.use('/appoinment' , appoinmentRoutes);
+app.use('/users', userRoutes);
+app.use('/services' , serviceRoutes);
+app.use('/appointments' , appointmentRoutes);
+
+
+User.hasMany(Appointment, { as: 'StaffAppointments', foreignKey: 'staffId' });
+User.hasMany(Appointment, { as: 'CustomerAppointments', foreignKey: 'customerId' });
+Appointment.belongsTo(User, { as: 'staff', foreignKey: 'staffId' });
+Appointment.belongsTo(User, { as: 'customer', foreignKey: 'customerId' });
+
+Appointment.belongsTo(Service, { foreignKey: 'serviceId' });
+Service.hasMany(Appointment, { foreignKey: 'serviceId' });
+
 
 
 app.use((req, res, next) => {
@@ -29,7 +41,7 @@ app.use((req, res, next) => {
 })
 
 
-sequelize.sync({})
+sequelize.sync()
     .then(() => {
         console.log('Listening...');
         app.listen(process.env.PORT || 3000);

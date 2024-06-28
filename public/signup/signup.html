@@ -12,7 +12,7 @@
     </header>
     <div class="signup-form-container">
         <div class="signup-form">
-            <form id="signupForm" onsubmit="signupPage(event)">
+            <form id="signupForm">
                 <label for="username">Name</label>
                 <input type="text" name="username" id="username" placeholder="Enter your name here" required>
 
@@ -21,7 +21,11 @@
 
                 <label for="password">Password</label>
                 <input type="password" name="password" id="password" placeholder="Enter your password here" required>
-
+                <label for="role">Role:</label>
+                <select id="role" name="role">
+                    <option value="customer">Customer</option>
+                    <option value="staff">Staff</option>
+                </select>
                 <button type="submit">Sign up</button>
 
                 <p>Already have an account? <a href="../login/login.html">Log in Now</a></p>

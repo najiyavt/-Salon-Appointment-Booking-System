@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services - Salon Booking System</title>
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1>Services</h1>
+        <nav>
+            <a href="../bookings/bookings.html">Home</a>
+            <a href="../login/login.html">Logout</a>
+        </nav>
+    </header>
+    <main>
+        <h2>Create Service</h2>
+        <form id="serviceForm">
+            <label for="name">Service Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="description">Description:</label>
+            <input type="text" id="description" name="description" required>
+
+            <label for="duration">Duration (minutes):</label>
+            <input type="number" id="duration" name="duration" required>
+
+            <label for="price">Price ($):</label>
+            <input type="number" id="price" name="price" required>
+
+            
+            <button type="submit">Create Service</button>
+        </form>
+
+        <!-- <h2>Existing Services</h2>
+        <div id="existingServices"></div> -->
+    </main>
+    <main>
+        <h2>All Appointments</h2>
+        <div id="appointments"></div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="services.js"></script>
+</body>
+</html>
