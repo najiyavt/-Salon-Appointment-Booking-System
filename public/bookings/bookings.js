@@ -4,6 +4,7 @@ const bookingForm = document.getElementById('bookingForm');
 document.addEventListener("DOMContentLoaded" , () => {
     loadUserAppointments();
     loadServices(); 
+    
 });
 
 
@@ -14,6 +15,7 @@ bookingForm.addEventListener('submit' , async(event) => {
     const date = bookingForm.date.value;
     const time = bookingForm.time.value;
     const dateTime = `${date}T${time}`;
+    const staffId = bookingForm.staff.value
 
     try{
         const response = await axios.post(`http://localhost:3000/appointments/book-appointment` , { serviceId , dateTime} , {headers: { 'Authorization': token }});
@@ -28,40 +30,35 @@ bookingForm.addEventListener('submit' , async(event) => {
 });
 
 
-async function loadUserAppointments(){
-    try{
+async function loadUserAppointments() {
+    try {
         const appointmentsContainer = document.getElementById('appointments');
-        const response = await axios.get(`http://localhost:3000/appointments/user-appointment` ,{headers: { 'Authorization': token }}); 
+        const response = await axios.get(`http://localhost:3000/appointments/user-appointment`, { headers: { 'Authorization': token } });
         const appointments = response.data;
-        console.log('User appointments' , appointments);
+        console.log('User appointments', appointments);
         appointmentsContainer.innerHTML = '';
+        
         appointments.forEach(appointment => {
-            console.log('Current appointment:', appointment); 
-            if (!appointment.Service) {
-                console.warn(`Service is undefined for appointment ID ${appointment.id}`);
-            }
-            if (!appointment.staff) {
-                console.warn(`Staff is undefined for appointment ID ${appointment.id}`);
-            }
+            console.log('Current appointment:', appointment);
+            const serviceName = appointment.service?.name || 'Service Not Found';
+
             const appointmentDiv = document.createElement('div');
             appointmentDiv.classList.add('appointment');
-            const serviceName = appointment.Service?.name || 'Service Not Found';
-            const staffName = appointment.staff?.username || 'Staff Not Found';
-            appointmentDiv.innerHTML =`
-                    <h3>${appointment.Service.name}</h3>
-                        <p>Date: ${new Date(appointment.dateTime).toLocaleDateString()}</p>
-                        <p>Time: ${new Date(appointment.dateTime).toLocaleTimeString()}</p>
-                        <p>Staff: ${appointment.staff.username}</p>
-                        <p>Status: ${appointment.status}</p>
-                        <button onclick="cancelAppointment(${appointment.id})">Cancel Appointment</button>)">Cancel Appointment</button>
-                    `;
-                    appointmentsContainer.appendChild(appointmentDiv);
+            appointmentDiv.innerHTML = `
+                <h3>${serviceName}</h3>
+                <p>Date: ${new Date(appointment.dateTime).toLocaleDateString()}</p>
+                <p>Time: ${new Date(appointment.dateTime).toLocaleTimeString()}</p>
+                <p>Status: ${appointment.status}</p>
+                <button onclick="cancelAppointment(${appointment.id})">Cancel Appointment</button>
+            `;
+            appointmentsContainer.appendChild(appointmentDiv);
         });
     } catch (error) {
-        console.error('Error booking appointment:', error);
-        alert('Booking failed. Please try again.');
+        console.error('Error loading appointments:', error);
+        alert('Failed to load appointments. Please try again.');
     }
 }
+
 
 async function loadServices(){
     try{
@@ -82,7 +79,28 @@ async function loadServices(){
     }
 }
 
-async function cancelAppointments(id){
+// async function loadStaff(){
+//     try{
+//         const response = await axios.get(`http://localhost:3000/services/get-staff`,{ headers: { 'Authorization': token } });
+//         const staff = response.data;
+//         console.log('staff fetched succesully!' , staff);
+
+//         const staffSelect = document.getElementById('staff');
+//         staffSelect.innerHTML='';
+
+//         staff.forEach(staffMember => {
+//             const option = document.createElement('option');
+//             option.value=staffMember.id;
+//             option.textContent= staffMember.username;
+//             staffSelect.appendChild(option);
+//         })
+//     } catch (error) {
+//         console.error('Error loading staff:', error);
+//         alert('Failed to load staff. Please try again.');
+//     }
+// }
+
+async function cancelAppointment(id){
     try{
         const response = await axios.put(`http://localhost:3000/appointments/cancel-appointment/${id}` ,{},{headers: { 'Authorization': token }}); 
         console.log('Appointment canceled successfully!' , response.data);

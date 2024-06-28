@@ -5,13 +5,13 @@ const User = require('../models/user');
 
 exports.bookAppointment = async ( req , res ) => {
     const { dateTime , serviceId } = req.body;
-    const userId = req.user.id;
     try {
         const newAppointment = await Appointment.create({  
             dateTime,
             status: 'scheduled',
-            customerId: userId,
+            customerId: req.user.id,
             serviceId,
+            
         });
         console.log('New appoinment' , newAppointment);
         res.status(201).json(newAppointment)
@@ -24,27 +24,17 @@ exports.bookAppointment = async ( req , res ) => {
 
 
 exports.getAllAppointments = async ( req , res ) => {
+    //staffId= req.user.id;
     try{
-        const appoinments = await Appointment.findAll({
+        const appointments = await Appointment.findAll({
+           // where:{staffId},
             include: [
-                {
-                    model:Service,
-                    attributes:['name']
-                },
-                {
-                    model:User,
-                    as:'staff',
-                    attributes:['username']
-                },
-                {
-                    model:User,
-                    as:'customer',
-                    attributes:['username']
-                }
+                { model: Service, attributes: ['name']  },
+                {  model: User, as: 'customer',attributes: ['username']}
             ]
         });
-        console.log('Staff appoinments' , appoinments);
-        res.json(appoinments);
+        console.log('Staff appoinments' , appointments);
+        res.json(appointments);
     } catch (error) {
         console.error('Failed to fetch staff appointments:', error);
         res.status(500).json({ error: 'Failed to fetch appointments' });
@@ -56,15 +46,15 @@ exports.getUserAppointments = async( req ,res) => {
     try{
         const appoinments = await Appointment.findAll({
             where: { customerId : userId},
-            include : [
+            include: [
                 {
-                    model:Service,
-                    attributes:['name']
+                    model: Service,
+                    attributes: ['name']
                 },
                 {
-                    model:User,
-                    as:'staff',
-                    attributes:['username']
+                    model: User,
+                    as: 'staff',
+                    attributes: ['username']
                 }
             ]
         });
@@ -85,7 +75,7 @@ exports.cancelAppointment = async(req, res) => {
             return res.status(404).json({ message: 'Appointments not found' });
         };
         appointment.status = 'canceled';
-        await Appointment.save();
+        await appointment.save();
         console.log('calncel appointments' , appointment);
         res.json(appointment);
     } catch(error){

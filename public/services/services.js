@@ -47,6 +47,7 @@ function handleServiceCreation (){
             const response = await axios.post(`http://localhost:3000/services/service-creation` ,data, {headers: { 'Authorization': token }} );
             const services = response.data;
             console.log('services',services);
+            serviceForm.reset()
             alert('Service created successfully!');
            // fetchServices();
         } catch (error) {
@@ -62,20 +63,22 @@ async function fetchAllAppointments(){
         const appointments = response.data;
         console.log('Fetched appointments', appointments);
         const appointmentsContainer = document.getElementById('appointments');
-        appointmentsContainer.innerHTML='';
+        appointmentsContainer.innerHTML = '';
         appointments.forEach(appointment => {
+            const serviceName = appointment.service?.name || 'Service Not Found';
+            const customerName = appointment.customer?.username || 'Customer Not Found';
             const appointmentDiv = document.createElement('div');
             appointmentDiv.classList.add('appointment');
             appointmentDiv.innerHTML = `
-                <h3>${appointment.Service.name}</h3>
-                <p>Customer: ${appointment.customer.username}</p>
-                <p>Staff: ${appointment.staff.username}</p>
+                <h3>${serviceName}</h3>
+                <p>Customer: ${customerName}</p>
                 <p>Date: ${new Date(appointment.dateTime).toLocaleDateString()}</p>
                 <p>Time: ${new Date(appointment.dateTime).toLocaleTimeString()}</p>
                 <p>Status: ${appointment.status}</p>
             `;
             appointmentsContainer.appendChild(appointmentDiv);
         });
+
     } catch (error) {
         console.error('Failed to fetch appointments:', error);
         alert('Failed to fetch all appointments')

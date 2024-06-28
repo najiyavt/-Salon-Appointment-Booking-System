@@ -22,13 +22,3 @@ exports.createServices = async ( req ,res) => {
         res.status(500).json({ error: error.message,message: 'Failed to create service.' });
     }
 }
-
-// exports.bookAppoinment = async ( req , res ) => {
-//     try {
-         
-//     } catch (error) {
- //   console.error(error);
-
-//         res.status(500).json({ message: 'Failed to book appointment.' });
-//     }
-// }
