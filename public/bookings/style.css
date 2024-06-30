@@ -7,7 +7,7 @@ body {
 }
 
 header {
-  background-color: #333;
+  background-color: rgb(82, 28, 82);
   color: #fff;
   padding: 10px 0;
   text-align: center;
@@ -71,7 +71,7 @@ select {
 }
 
 button {
-  background-color: #4CAF50;
+  background-color: rgb(82, 28, 82);
   color: white;
   padding: 10px 20px;
   border: none;
@@ -80,7 +80,7 @@ button {
 }
 
 button:hover {
-  background-color: #1d731d;
+  background-color: rgb(147, 65, 147);
 }
 
 /* Appointments */

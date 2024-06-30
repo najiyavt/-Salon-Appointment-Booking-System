@@ -1,103 +1,132 @@
-/* General styles */
+/* style.css */
+
+/* Global Styles */
 body {
   font-family: Arial, sans-serif;
-  background-color: #f2f2f2;
+  line-height: 1.6;
   margin: 0;
   padding: 0;
+  background-color: #f4f4f4;
 }
 
 header {
-  background-color: #333;
+  background-color: rgb(82, 28, 82);
   color: #fff;
-  padding: 10px 0;
-  text-align: center;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 header h1 {
   margin: 0;
 }
 
-nav {
-  text-align: right;
-  margin-top: -30px;
-  margin-right: 20px;
-}
-
 nav a {
   color: #fff;
   text-decoration: none;
   padding: 5px 10px;
-  border-radius: 5px;
-  background-color: #555;
+  border-radius: 3px;
+  transition: background-color 0.3s ease;
 }
 
 nav a:hover {
-  background-color: #777;
+  background-color: #555;
 }
 
 main {
-  margin: 20px;
+  max-width: 800px;
+  margin: 20px auto;
   padding: 20px;
   background-color: #fff;
-  border-radius: 10px;
+  border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 h2 {
   color: #333;
-  margin-bottom: 10px;
 }
 
-form {
-  max-width: 500px;
-  margin: auto;
+/* Service Section */
+#serviceForm {
+  display: grid;
+  gap: 10px;
+  max-width: 400px;
+  margin-bottom: 20px;
 }
 
-label {
-  display: block;
-  margin-bottom: 5px;
+#serviceForm label {
+  font-weight: bold;
 }
 
-input[type="text"],
-input[type="number"],
-input[type="date"],
-input[type="time"],
-select {
+#serviceForm input[type="text"],
+#serviceForm input[type="number"] {
   width: 100%;
   padding: 8px;
-  margin-bottom: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+#serviceForm button {
+  padding: 10px 20px;
+  background-color: rgb(82, 28, 82);
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#serviceForm button:hover {
+  background-color: rgb(168, 60, 168);
+}
+
+/* Services Section */
+.servicesContainer {
+  display: grid;
+  gap: 20px;
+}
+
+.service {
+  padding: 15px;
+  background-color: #f9f9f9;
   border: 1px solid #ccc;
   border-radius: 5px;
 }
 
-button {
-  background-color: #4CAF50;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+.service h3 {
+  margin-top: 0;
+  color: #333;
+  font-size: 1.3rem;
 }
 
-button:hover {
-  background-color: #206923;
+.service p {
+  margin: 5px 0;
+  color: #666;
 }
 
-/* Appointments */
+/* Appointments Section */
+.appointmentsContainer {
+  margin-top: 20px;
+}
+
 .appointment {
-  margin-bottom: 20px;
-  padding: 10px;
-  background-color: #f9f9f9;
+  background-color: #f0f0f0;
   border: 1px solid #ddd;
   border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
 }
 
 .appointment h3 {
-  color: #333;
   margin-top: 0;
+  color: #333;
+  font-size: 1.2rem;
 }
 
 .appointment p {
   margin: 5px 0;
   color: #666;
 }
+

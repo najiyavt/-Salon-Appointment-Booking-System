@@ -1,19 +1,20 @@
 const { where } = require('sequelize');
-const Appointment = require('../models/appointments');
-const Service = require('../models/service');
-const User = require('../models/user');
+const  Appointment = require('../models/appointments');
+const  User = require('../models/user');
+const  Service = require('../models/service');
 
-exports.bookAppointment = async ( req , res ) => {
-    const { dateTime , serviceId } = req.body;
+
+exports.bookAppointment = (io) => async ( req , res ) => {
+    const { dateTime , serviceId ,staffId } = req.body;
     try {
         const newAppointment = await Appointment.create({  
             dateTime,
-            status: 'scheduled',
+            status: 'Scheduled',
             customerId: req.user.id,
             serviceId,
-            
+            staffId
         });
-        console.log('New appoinment' , newAppointment);
+        io.emit('newAppointment', newAppointment);
         res.status(201).json(newAppointment)
     } catch (error) {
         console.error('Failed to book appointment:', error);
@@ -24,16 +25,14 @@ exports.bookAppointment = async ( req , res ) => {
 
 
 exports.getAllAppointments = async ( req , res ) => {
-    //staffId= req.user.id;
     try{
         const appointments = await Appointment.findAll({
-           // where:{staffId},
             include: [
                 { model: Service, attributes: ['name']  },
-                {  model: User, as: 'customer',attributes: ['username']}
+                {  model: User, as: 'customer',attributes: ['username']},
+                { model: User, as: 'staff', attributes: ['username'] }
             ]
         });
-        console.log('Staff appoinments' , appointments);
         res.json(appointments);
     } catch (error) {
         console.error('Failed to fetch staff appointments:', error);
@@ -58,7 +57,6 @@ exports.getUserAppointments = async( req ,res) => {
                 }
             ]
         });
-        console.log('User appoinments' , appoinments);
         res.json(appoinments);
     } catch(error){
         console.error('Failed to fetch user appointments:', error);
@@ -74,9 +72,8 @@ exports.cancelAppointment = async(req, res) => {
         if (!appointment) {
             return res.status(404).json({ message: 'Appointments not found' });
         };
-        appointment.status = 'canceled';
+        appointment.status = 'Canceled';
         await appointment.save();
-        console.log('calncel appointments' , appointment);
         res.json(appointment);
     } catch(error){
         console.error(error);

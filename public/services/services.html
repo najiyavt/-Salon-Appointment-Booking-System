@@ -8,7 +8,7 @@
 </head>
 <body>
     <header>
-        <h1>Services</h1>
+        <h1>Staff Services</h1>
         <nav>
             <a href="../login/login.html">Logout</a>
         </nav>
@@ -32,13 +32,17 @@
             <button type="submit">Create Service</button>
         </form>
 
-        <!-- <h2>Existing Services</h2>
-        <div id="existingServices"></div> -->
+        <h2>Available Services</h2>
+        <div id="existingServices"></div>
     </main>
     <main>
         <h2>All Appointments</h2>
         <div id="appointments"></div>
     </main>
+
+    <!-- <script src="/socket.io/socket.io.js"></script> -->
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>    
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.min.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="services.js"></script>
 </body>
