@@ -2,6 +2,7 @@ const { where } = require('sequelize');
 const  Appointment = require('../models/appointments');
 const  User = require('../models/user');
 const  Service = require('../models/service');
+const Razorpay = require('razorpay');
 
 
 exports.bookAppointment = (io) => async ( req , res ) => {
@@ -22,6 +23,29 @@ exports.bookAppointment = (io) => async ( req , res ) => {
 
     }
 }
+
+const razorpay = new Razorpay({
+    key_id: process.env.RAZORPAY_KEY_ID,
+    key_secret: process.env.RAZORPAY_KEY_SECRET
+});
+
+exports.appointmentPayment = async (req, res) => {
+    const {amount , currency , receipt } = req.body;
+    try {
+        const options = {
+            amount: amount ,
+            currency,
+            receipt,
+        };
+        console.log('options' , options);
+        const order = await razorpay.orders.create(options);
+        console.log('orrder' , order);
+        res.status(200).json({order,key_id: razorpay.key_id });
+    } catch (error) {
+        console.error('Error in payment:', error);
+        res.status(500).json({ message: 'Something went wrong in payment', error: error });
+    }
+};
 
 
 exports.getAllAppointments = async ( req , res ) => {
@@ -79,4 +103,4 @@ exports.cancelAppointment = async(req, res) => {
         console.error(error);
         res.status(500).json({message:'error cancelling appoinments', error: error.message });
     }
-}
+};

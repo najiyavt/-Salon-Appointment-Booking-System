@@ -8,7 +8,6 @@ module.exports = (io) => {
     router.get('/user-appointment' , auth.authenticate , appointment.getUserAppointments);
     router.get('/get-all-appointments' , auth.authenticate , appointment.getAllAppointments);
     router.put('/cancel-appointment/:id' , auth.authenticate  ,appointment.cancelAppointment); 
-    
+    router.post('/create-order',auth.authenticate , appointment.appointmentPayment);
     return router;
-
 }

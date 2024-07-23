@@ -17,24 +17,28 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 const userRoutes = require('./routes/user');
+const passwrodRoutes = require('./routes/passwords');
 const serviceRoutes = require('./routes/service')
 const appointmentRoutes = require('./routes/appointments')(io);
 
 const User = require('./models/user');
+const Password = require('./models/ForgotPasswordRequests');
 const Service = require('./models/service');
 const Appointment = require('./models/appointments');
 
 app.use('/users', userRoutes);
+app.use('/password', passwrodRoutes);
 app.use('/services' , serviceRoutes);
 app.use('/appointments' , appointmentRoutes);
 
 require('./cronJob/cron');
 
+User.hasMany(Password);
+Password.belongsTo(User);
 User.hasMany(Appointment, { as: 'StaffAppointments', foreignKey: 'staffId' });
 User.hasMany(Appointment, { as: 'CustomerAppointments', foreignKey: 'customerId' });
 Appointment.belongsTo(User, { as: 'staff', foreignKey: 'staffId' });
 Appointment.belongsTo(User, { as: 'customer', foreignKey: 'customerId' });
-
 Appointment.belongsTo(Service, { foreignKey: 'serviceId' });
 Service.hasMany(Appointment, { foreignKey: 'serviceId' });
 

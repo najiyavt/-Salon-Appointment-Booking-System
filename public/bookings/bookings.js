@@ -1,14 +1,16 @@
-const token = localStorage.getItem('token')
-const bookingForm = document.getElementById('bookingForm');
+// const Razorpay = require("razorpay");
 
+const token = localStorage.getItem('token');
+const bookingForm = document.getElementById('bookingForm');
+const payButton = document.getElementById('payButton');
 
 document.addEventListener("DOMContentLoaded" , () => {
     loadUserAppointments();
     loadServices(); 
-    loadStaff()
+    loadStaff();
 });
 
-bookingForm.addEventListener('submit' , async(event) => {
+payButton.addEventListener('click' , async(event) => {
     event.preventDefault();
 
     const serviceId = bookingForm.service.value;
@@ -18,13 +20,41 @@ bookingForm.addEventListener('submit' , async(event) => {
     const staffId = bookingForm.staff.value
 
     try{
-        const response = await axios.post(`http://localhost:3000/appointments/book-appointment` , { serviceId , dateTime , staffId} , {headers: { 'Authorization': token }});
-        alert('Booking succefull');
-        bookingForm.reset();
-        loadUserAppointments();
+        const serviceResponse = await axios.get(`http://localhost:3000/services/get-service/${serviceId}`, { headers: { 'Authorization': token } });
+        const service = serviceResponse.data;
+        const amount = service.price*100;
+
+        const orderResponse = await axios.post(`http://localhost:3000/appointments/create-order`, { amount, currency: 'INR', receipt: 'receipt#1' }, { headers: { 'Authorization': token } });
+        const order = orderResponse.data;
+
+        const options = {
+            key:order.key_id,
+            amount:order.order.amount,
+            currency: 'INR',
+            description: 'Test Transaction',
+            name: 'DONAN SALON STUDIOS',
+            order_id: order.order.id,
+            handler: async function (response){
+                alert('Payment successful! Razorpay Payment ID: ' + response.razorpay_payment_id);
+
+                const bookingResponse = await axios.post(`http://localhost:3000/appointments/book-appointment` , { serviceId , dateTime , staffId} , {headers: { 'Authorization': token }});
+                alert('Booking succefull');
+                bookingForm.reset();
+                loadUserAppointments();
+            },
+            
+            notes: {
+                address: 'DONAN SALON STUDIOS'
+            },
+            theme: {
+                color: '#F37254'
+            }
+        };
+        const rzp1 = new Razorpay(options);
+        rzp1.open();
     } catch (error) {
-        console.error('Error booking appointment:', error);
-        alert('Booking failed. Please try again.');
+        console.error('Error processing payment:', error);
+        alert('Payment failed. Please try again.');
     }
 });
 
@@ -99,8 +129,10 @@ async function cancelAppointment(id){
         alert('Appointment canceled successfully!');
         loadUserAppointments()
     } catch (error) {
-        console.error('Error booking appointment:', error);
-        alert('Booking failed. Please try again.');
+        console.error('Error canceling appointment:', error);
+        alert('Cancellation failed. Please try again.');
     }
 }
+
+
    

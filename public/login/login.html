@@ -22,11 +22,16 @@
  
              <button type="submit">Login</button>
              <p>New User? <a href="../signup/signup.html">Sign up Now</a></p>
+
          </form>
        </div>
      </div>
-
-   </body>
+     <button id="forgotPasswrd" onclick="sendForm()">Forgot password?</button>
+     <form id="emailForm" onsubmit="submitEmailForm(event)" style="display: none;">
+         <input type="email" id="emailForgt" placeholder="Enter your email..">
+         <button id="sendEmailForm" >Send email</button>
+     </form>   
+    </body>
 
     <script src="./login.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.8/axios.min.js"></script>

@@ -5,6 +5,7 @@ const auth = require('../middleware/auth');
 const service = require('../controllers/service');
 
 router.get('/get-service' , auth.authenticate , service.getAllServices);
+router.get('/get-service/:serviceId' , auth.authenticate , service.getServiceById);
 router.get('/get-staff' , auth.authenticate, service.getStaff);
 router.post('/service-creation' , auth.authenticate ,auth.isStaff,service.createServices);
 

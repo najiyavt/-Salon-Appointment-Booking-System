@@ -29,15 +29,17 @@
             <label for="time">Time:</label>
             <input type="time" id="time" name="time" required>
 
-            <button type="submit">Book Appointment</button>
+            <button type="button"  id="payButton">Book Appointment</button>
         </form>
     </main>
+    
     <main>
         <h2>Your Appointments</h2>
         <div id="appointments"></div>
     </main>
     
     <!-- <script src="/socket.io/socket.io.js"></script> -->
+    <script  src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="bookings.js"></script>
 </body>

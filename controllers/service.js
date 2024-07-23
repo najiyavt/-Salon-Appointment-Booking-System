@@ -1,3 +1,4 @@
+const { where } = require('sequelize');
 const Service = require('../models/service');
 const User = require('../models/user');
 
@@ -21,6 +22,21 @@ exports.createServices = async ( req ,res) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: error.message,message: 'Failed to create service.' });
+    }
+}
+
+exports.getServiceById = async (req,res) => {
+    const {serviceId} = req.params;
+    try{
+        const service = await Service.findOne({ where: { id: serviceId}});
+        if (!service) {
+            return res.status(404).json({ message: 'Service not found' });
+        }
+        console.log('service by id',service)
+        res.status(200).json(service);
+    } catch (error) {
+        console.error('Error fetching service:', error);
+        res.status(500).json({ message: 'Failed to fetch service', error: error.message });
     }
 }
 

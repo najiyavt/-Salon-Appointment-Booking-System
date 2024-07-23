@@ -21,4 +21,25 @@ async function loginSubmit (event) {
         console.error('Error logging in:', error);
         alert('Login failed. Please check your credentials and try again.');
     }
+};
+
+
+async function sendForm(){
+    document.getElementById('emailForm').style.display='block';
+}
+
+async function submitEmailForm(event){
+    event.preventDefault();
+    const email = document.getElementById('emailForgt').value;
+
+    try{
+        const response = await axios.post(`http://localhost:3000/password/forgotpassword` , {email});
+        
+        alert('Reset email sent successfully!');
+        document.getElementById('emailForm').style.display = 'none';
+        document.getElementById('emailForgt').value='';
+    }catch (error) {
+        console.error('Error sending reset email:', error);
+        alert('Failed to send reset email. Please try again.');
+    }
 }
